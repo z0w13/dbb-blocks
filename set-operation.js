@@ -149,7 +149,7 @@ module.exports = {
       description: "What kind of item to output",
       type: "SELECT",
       options: {
-        set: "Set object (won't work if sorted)",
+        set: "Set object (will be ignored if sorted)",
         array: "array",
       },
     },
