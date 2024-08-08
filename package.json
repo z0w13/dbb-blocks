@@ -1,0 +1,11 @@
+{
+  "name": "@z0w13/dbb-blocks",
+  "version": "0.1.0",
+  "description": "A collection of blocks for Discord Bot Builder",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["discord-bot-builder"],
+  "author": "z0w13",
+  "license": "MIT"
+}
