@@ -97,6 +97,18 @@ describe("executeSetOperation", () => {
     expect(cache.outputs["result"]).toEqual(new Set(expected));
   });
 
+  it("executes diff correctly on sets of objects", () => {
+    const objA = { a: "b" };
+    const objC = { c: "d" };
+    const result = DBBMock.runBlock(
+      setOperation,
+      { in1: [objA, objC], in2: [objA] },
+      { operation: "diff" },
+    ).outputs["result"];
+
+    expect(result).toEqual(new Set([objC]));
+  });
+
   it("errors on invalid operation", () => {
     expect(() => {
       DBBMock.runBlock(
