@@ -3,9 +3,18 @@
   "version": "0.1.0",
   "description": "A collection of blocks for Discord Bot Builder",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
-  "keywords": ["discord-bot-builder"],
+  "keywords": [
+    "discord-bot-builder"
+  ],
   "author": "z0w13",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
 }

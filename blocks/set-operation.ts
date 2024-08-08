@@ -1,14 +1,12 @@
-function validateInput(input, name) {
+import { DBB, Cache, Block } from "../lib/definitions";
+
+function validateInput(input: any, name: string) {
   if (typeof input === "string" || input === undefined || input === null) {
     throw new Error("ERROR: '" + name + "' can't be string/undefined/null");
   }
 }
 
-function processInput(input, objectProcessMethod) {
-  if (typeof input === "string" || input === undefined || input === null) {
-    throw new Error("input can't be string/undefined/null");
-  }
-
+function processInput(input: any, objectProcessMethod: string): Set<any> {
   if (typeof input[Symbol.iterator] === "function") {
     return new Set(input);
   }
@@ -21,13 +19,35 @@ function processInput(input, objectProcessMethod) {
         return new Set(Object.values(input));
       default:
         throw new Error(
-          `Invalid object process method: ${objectProcessMethod}`,
+          `invalid object process method: ${objectProcessMethod}`,
         );
     }
   }
+
+  throw new Error(`unknown input: ${input}`);
 }
 
-function executeSort(input, method) {
+function executeSetOperation(
+  input1: Set<any>,
+  input2: Set<any>,
+  operation: string,
+): Set<any> {
+  switch (operation) {
+    case "union":
+      return input1.union(input2);
+    case "intersect":
+      return input1.intersection(input2);
+    case "diff":
+      return input1.difference(input2);
+    case "symdiff":
+      return input1.symmetricDifference(input2);
+    default:
+      throw new Error(`invalid set operation: ${operation}`);
+  }
+}
+
+function executeSort(input: Set<any>, method: "no"): Set<any>;
+function executeSort(input: Set<any>, method: string): Array<any> | Set<any> {
   switch (method) {
     case "no":
       return input;
@@ -40,26 +60,16 @@ function executeSort(input, method) {
         b.localeCompare(a, undefined, { numeric: true }),
       );
     default:
-      throw new Error(`Invalid sort method: ${method}`);
+      throw new Error(`invalid sort method: ${method}`);
   }
 }
 
-function executeSetOperation(input1, input2, operation) {
-  switch (operation) {
-    case "union":
-      return input1.union(input2);
-    case "intersect":
-      return input1.intersection(input2);
-    case "diff":
-      return input1.difference(input2);
-    case "symdiff":
-      return input1.symmetricDifference(input2);
-    default:
-      throw new Error(`Invalid set operation: ${operation}`);
-  }
-}
-
-function convertOutput(input, outputType) {
+function convertOutput(input: Set<any>, outputType: "array"): Array<any>;
+function convertOutput(
+  input: Set<any>,
+  outputType: "set",
+): Array<any> | Set<any>;
+function convertOutput(input: any, outputType: string) {
   switch (outputType) {
     case "set":
       // NOTE: Even if input is an array we directly return it, because that means
@@ -68,11 +78,11 @@ function convertOutput(input, outputType) {
     case "array":
       return Array.from(input);
     default:
-      throw new Error(`Invalid output type: ${outputType}`);
+      throw new Error(`invalid output type: ${outputType}`);
   }
 }
 
-module.exports = {
+const block: Block = {
   name: "Set Operation",
   description: "Various set operations",
   category: "List Stuff",
@@ -85,14 +95,14 @@ module.exports = {
       types: ["action"],
     },
     {
-      id: "input-1",
+      id: "in1",
       name: "Input 1",
       description:
         "Type: List, Array, Set, Object\n\nDescription: first value to compare",
       types: ["list", "object"],
     },
     {
-      id: "input-2",
+      id: "in2",
       name: "Input 2",
       description:
         "Type: List, Array, Set, Object\n\nDescription: second value to compare",
@@ -131,7 +141,7 @@ module.exports = {
       },
     },
     {
-      id: "object-process",
+      id: "objectProcessMethod",
       name: "Object Processing",
       description: "How to process the input if it's a non-iterable object",
       type: "SELECT",
@@ -152,7 +162,7 @@ module.exports = {
       },
     },
     {
-      id: "output-type",
+      id: "outputType",
       name: "Output Type",
       description: "What kind of item to output",
       type: "SELECT",
@@ -163,16 +173,16 @@ module.exports = {
     },
   ],
 
-  code(cache) {
-    const in1 = this.GetInputValue("input-1", cache);
-    const in2 = this.GetInputValue("input-2", cache);
+  code(this: DBB, cache: Cache) {
+    const in1 = this.GetInputValue("in1", cache);
+    const in2 = this.GetInputValue("in2", cache);
     const options = cache.options;
 
     validateInput(in1, "Input 1");
     validateInput(in2, "Input 2");
 
-    const processed1 = processInput(in1, options["object-process"]);
-    const processed2 = processInput(in2, options["object-process"]);
+    const processed1 = processInput(in1, options["objectProcessMethod"]);
+    const processed2 = processInput(in2, options["objectProcessMethod"]);
 
     const operated = executeSetOperation(
       processed1,
@@ -180,9 +190,10 @@ module.exports = {
       options["operation"],
     );
     const sorted = executeSort(operated, options["sort"]);
-    const result = convertOutput(sorted, options["output-type"]);
+    const result = convertOutput(sorted, options["outputType"]);
 
     this.StoreOutputValue(result, "result", cache);
     this.RunNextBlock("action", cache);
   },
 };
+export default block;
