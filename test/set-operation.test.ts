@@ -148,6 +148,27 @@ describe("executeSort", () => {
 
     expect(result).toEqual(["c", "b", "a"]);
   });
+  it("sorts correctly with numbers", () => {
+    const result = DBBMock.runBlock(
+      setOperation,
+      { in1: [3, 2, 1], in2: [2] },
+      { operation: "union", sort: "alpha" },
+    ).outputs["result"];
+
+    expect(result).toEqual([1, 2, 3]);
+  });
+  it("sorts correctly with objects", () => {
+    const objA = { a: "b" };
+    const objC = { c: "d" };
+    const result = DBBMock.runBlock(
+      setOperation,
+      { in1: [objC, objA], in2: [objA] },
+      { operation: "union", sort: "alpha" },
+    ).outputs["result"];
+
+    expect(result).toEqual([objA, objC]);
+  });
+
   it("errors on invalid sort method", () => {
     expect(() =>
       DBBMock.runBlock(

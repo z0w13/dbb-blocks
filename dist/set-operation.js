@@ -34,14 +34,28 @@ function executeSetOperation(input1, input2, operation) {
             throw new Error(`invalid set operation: ${operation}`);
     }
 }
+function compare(a, b) {
+    // use localeCompare for strings
+    if (typeof a === "string" && typeof b === "string") {
+        return a.localeCompare(b, undefined, { numeric: true });
+    }
+    // just compare the numbers if they're well numbers
+    if (typeof a === "number" && typeof b === "number") {
+        return a - b;
+    }
+    // for anything else, JSON.stringify and pray
+    return JSON.stringify(a).localeCompare(JSON.stringify(b), undefined, {
+        numeric: true,
+    });
+}
 function executeSort(input, method) {
     switch (method) {
         case "no":
             return input;
         case "alpha":
-            return Array.from(input).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+            return Array.from(input).sort((a, b) => compare(a, b));
         case "alpharev":
-            return Array.from(input).sort((a, b) => b.localeCompare(a, undefined, { numeric: true }));
+            return Array.from(input).sort((a, b) => compare(b, a));
         default:
             throw new Error(`invalid sort method: ${method}`);
     }
