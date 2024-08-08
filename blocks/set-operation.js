@@ -19,6 +19,10 @@ function processInput(input, objectProcessMethod) {
         return new Set(Object.keys(input));
       case "values":
         return new Set(Object.values(input));
+      default:
+        throw new Error(
+          `Invalid object process method: ${objectProcessMethod}`,
+        );
     }
   }
 }
@@ -35,6 +39,8 @@ function executeSort(input, method) {
       return Array.from(input).sort((a, b) =>
         b.localeCompare(a, undefined, { numeric: true }),
       );
+    default:
+      throw new Error(`Invalid sort method: ${method}`);
   }
 }
 
@@ -49,7 +55,7 @@ function executeSetOperation(input1, input2, operation) {
     case "symdiff":
       return input1.symmetricDifference(input2);
     default:
-      throw new Error(`Invalid set operation: ${options["operation"]}`);
+      throw new Error(`Invalid set operation: ${operation}`);
   }
 }
 
@@ -61,6 +67,8 @@ function convertOutput(input, outputType) {
       return input;
     case "array":
       return Array.from(input);
+    default:
+      throw new Error(`Invalid output type: ${outputType}`);
   }
 }
 
