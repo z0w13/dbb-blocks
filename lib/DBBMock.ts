@@ -7,7 +7,9 @@ export default class DBBMock {
   StoreOutputValue(value: any, key: string, cache: Cache): any {
     cache.outputs[key] = value;
   }
-  RunNextBlock(_key: string, _cache: Cache): void {}
+  RunNextBlock(key: string, cache: Cache): void {
+    cache.outputs[key] = { called: true }
+  }
 
   static runBlock(
     block: Block,
