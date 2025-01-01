@@ -39,6 +39,7 @@ export interface Cache {
 
 export interface DBB {
   GetInputValue(key: string, cache: Cache): any;
+  GetOptionValue(key: string, cache: Cache): any;
   StoreOutputValue(value: any, key: string, cache: Cache): void;
   RunNextBlock(_key: string, _cache: Cache): void;
 }

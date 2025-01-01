@@ -4,6 +4,9 @@ export default class DBBMock {
   GetInputValue(key: string, cache: Cache): any {
     return cache.inputs[key];
   }
+  GetOptionValue(key: string, cache: Cache): any {
+    return cache.options[key];
+  }
   StoreOutputValue(value: any, key: string, cache: Cache): any {
     cache.outputs[key] = value;
   }
