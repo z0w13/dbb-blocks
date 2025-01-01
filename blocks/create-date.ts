@@ -111,6 +111,9 @@ const block: Block = {
 
         function addDate(custom_date: Date) {
             const Cy = custom_date.getFullYear() + year;
+            // NOTE: Even though we use 0-based month indexing, the month is only
+            //       used for adding/subtracting here and not to index, so we
+            //       don't need to subtract 1
             const Cmh = custom_date.getMonth() + (month || 0);
             const Cd = custom_date.getDate() + day;
             const Ch = custom_date.getHours() + hours;
@@ -124,6 +127,8 @@ const block: Block = {
         let date;
         switch (start_date) {
             case "beginning":
+                // NOTE: months in javascript are 0 indexed, assume user uses
+                //       month 1-12 and deduct 1
                 date = fixedDate(year, month - 1 || 0, day, hours, minutes, seconds, milliseconds);
                 break;
             case "custom":
