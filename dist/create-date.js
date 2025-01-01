@@ -1,36 +1,29 @@
-import { DBB, Cache, Block } from "../lib/definitions";
-
+"use strict";
 // heavily inspired by date-fns/addMonths
-function addMonths(date: Date, amount: number): Date {
-    const currentDay = date.getDate()
-
+function addMonths(date, amount) {
+    const currentDay = date.getDate();
     const endOfNewMonth = new Date(date);
     // Add 1 more month than desired, but because dateValue is 0 date gets set
     // to the last day of the desired month
     endOfNewMonth.setMonth(date.getMonth() + amount + 1, 0);
-
     if (currentDay >= endOfNewMonth.getDate()) {
         // if current day of month is more than or equal to the new day of month
         // return as we wanted end of month
         return endOfNewMonth;
-    } else {
+    }
+    else {
         // if not, we need to get the year/month from endOfNewMonth and
         // set the new Date to use those with its current date
-        const newDate = new Date(date)
-        newDate.setFullYear(endOfNewMonth.getFullYear())
-        newDate.setMonth(endOfNewMonth.getMonth())
-
-        return newDate
+        const newDate = new Date(date);
+        newDate.setFullYear(endOfNewMonth.getFullYear());
+        newDate.setMonth(endOfNewMonth.getMonth());
+        return newDate;
     }
 }
-
-const block: Block = {
+const block = {
     name: "Create Date",
-
     description: "Creates a date to use it in your blocks.",
-
     category: "Date Stuff",
-
     inputs: [
         {
             "id": "action",
@@ -87,7 +80,6 @@ const block: Block = {
             "types": ["date", "unspecified"]
         }
     ],
-
     options: [
         {
             "id": "start_date",
@@ -101,7 +93,6 @@ const block: Block = {
             }
         }
     ],
-
     outputs: [
         {
             "id": "action",
@@ -116,8 +107,7 @@ const block: Block = {
             "types": ["date"]
         }
     ],
-
-    code(this: DBB, cache: Cache) {
+    code(cache) {
         const year = parseInt(this.GetInputValue("year", cache)) || 0;
         const month = parseInt(this.GetInputValue("month", cache));
         const day = parseInt(this.GetInputValue("day", cache)) || 0;
@@ -127,16 +117,13 @@ const block: Block = {
         const milliseconds = parseInt(this.GetInputValue("milliseconds", cache)) || 0;
         const custom_date = this.GetInputValue("custom_date", cache);
         const start_date = this.GetOptionValue("start_date", cache);
-
-        function fixedDate(_year: number, _month: number, _day: number, _hours: number, _minutes: number, _seconds: number, _milliseconds: number) {
+        function fixedDate(_year, _month, _day, _hours, _minutes, _seconds, _milliseconds) {
             const _b = new Date(0, _month, _day, _hours, _minutes, _seconds, _milliseconds);
             _b.setFullYear(_year);
             return _b;
         }
-
-        function addDate(custom_date: Date) {
+        function addDate(custom_date) {
             let newDate = new Date(custom_date);
-
             newDate.setFullYear(newDate.getFullYear() + year);
             // NOTE: Even though we use 0-based month indexing, the month is only
             //       used for adding/subtracting here and not to index, so we
@@ -147,10 +134,8 @@ const block: Block = {
             newDate.setMinutes(newDate.getMinutes() + minutes);
             newDate.setSeconds(newDate.getSeconds() + seconds);
             newDate.setMilliseconds(newDate.getMilliseconds() + milliseconds);
-
             return newDate;
         }
-
         let date;
         switch (start_date) {
             case "beginning":
@@ -165,10 +150,8 @@ const block: Block = {
                 date = addDate(new Date());
                 break;
         }
-
         this.StoreOutputValue(date, "date", cache);
         this.RunNextBlock("action", cache);
     }
-}
-
-export default block;
+};
+module.exports = block;
