@@ -1,6 +1,6 @@
 {
   "name": "@z0w13/dbb-blocks",
-  "version": "0.1.0",
+  "version": "0.4.0",
   "description": "A collection of blocks for Discord Bot Builder",
   "scripts": {
     "test": "jest"
