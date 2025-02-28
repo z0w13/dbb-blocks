@@ -32,63 +32,65 @@ const TEST_CASES: Array<[string, Record<string, number>, string]> = [
 ]
 
 describe("create-date", () => {
-  it("returns the current date when start_date = 'current'", () => {
-    let now = new Date("2024-01-01T00:00:00");
+    it("returns the current date when start_date = 'current'", () => {
+        let now = new Date("2024-01-01T00:00:00");
 
-    jest.useFakeTimers();
-    jest.setSystemTime(now);
+        jest.useFakeTimers();
+        jest.setSystemTime(now);
 
-    expect(
-      DBBMock.runBlock(createDate, {}, { start_date: "current" }).outputs[
-        "date"
-      ],
-    ).toEqual(now);
+        expect(
+            DBBMock.runBlock(createDate, {}, { start_date: "current" }).outputs[
+                "date"
+            ],
+        ).toEqual(now);
 
-    jest.useRealTimers();
-  });
+        jest.useRealTimers();
+    });
 
-  it("returns 0000-12-30T23:42:30.000Z when start_date = 'beginning'", () => {
-    let expected = new Date(0, 0, 0, 0, 0, 0, 0);
-    expected.setFullYear(0);
+    it("returns 0000-12-30T23:42:30.000Z when start_date = 'beginning'", () => {
+        let expected = new Date(0, 0, 0, 0, 0, 0, 0);
+        expected.setFullYear(0);
 
-    expect(
-      DBBMock.runBlock(createDate, {}, { start_date: "beginning" }).outputs[
-        "date"
-      ],
-    ).toEqual(expected);
-  });
+        expect(
+            DBBMock.runBlock(createDate, {}, { start_date: "beginning" })
+                .outputs["date"],
+        ).toEqual(expected);
+    });
 
-  it("creates a fixed date with the correct month when start_date = 'beginning'", () => {
-    let expected = new Date("2024-01-01T00:00:00");
+    it("creates a fixed date with the correct month when start_date = 'beginning'", () => {
+        let expected = new Date("2024-01-01T00:00:00");
 
-    expect(
-      DBBMock.runBlock(
-        createDate,
-        { year: 2024, month: 1, day: 1 },
-        { start_date: "beginning" },
-      ).outputs["date"],
-    ).toEqual(expected);
-  });
+        expect(
+            DBBMock.runBlock(
+                createDate,
+                { year: 2024, month: 1, day: 1 },
+                { start_date: "beginning" },
+            ).outputs["date"],
+        ).toEqual(expected);
+    });
 
-  it("returns the custom date when start_date = 'custom'", () => {
-    let custom_date = new Date("2024-01-01");
+    it("returns the custom date when start_date = 'custom'", () => {
+        let custom_date = new Date("2024-01-01");
 
-    expect(
-      DBBMock.runBlock(createDate, { custom_date }, { start_date: "custom" })
-        .outputs["date"],
-    ).toEqual(custom_date);
-  });
+        expect(
+            DBBMock.runBlock(
+                createDate,
+                { custom_date },
+                { start_date: "custom" },
+            ).outputs["date"],
+        ).toEqual(custom_date);
+    });
 
-  it.each(TEST_CASES)(
-    "correctly modifies the date: (%p, %p, %p)",
-    (start, inputs, expected) => {
-      expect(
-        DBBMock.runBlock(
-          createDate,
-          { custom_date: new Date(start), ...inputs },
-          { start_date: "custom" },
-        ).outputs["date"],
-      ).toEqual(new Date(expected));
-    },
-  );
+    it.each(TEST_CASES)(
+        "correctly modifies the date: (%p, %p, %p)",
+        (start, inputs, expected) => {
+            expect(
+                DBBMock.runBlock(
+                    createDate,
+                    { custom_date: new Date(start), ...inputs },
+                    { start_date: "custom" },
+                ).outputs["date"],
+            ).toEqual(new Date(expected));
+        },
+    );
 });

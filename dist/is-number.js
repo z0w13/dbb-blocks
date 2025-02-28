@@ -3,7 +3,10 @@ function isNumber(value) {
     if (typeof value !== "string" && typeof value !== "number") {
         return false;
     }
-    return !!value.toString().trim().match(/^[0-9]+$/);
+    return !!value
+        .toString()
+        .trim()
+        .match(/^[0-9]+$/);
 }
 const block = {
     name: "Is Number",

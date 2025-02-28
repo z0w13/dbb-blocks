@@ -26,86 +26,86 @@ const block = {
     category: "Date Stuff",
     inputs: [
         {
-            "id": "action",
-            "name": "Action",
-            "description": "Acceptable Types: Action\n\nDescription: Executes this block.",
-            "types": ["action"]
+            id: "action",
+            name: "Action",
+            description: "Acceptable Types: Action\n\nDescription: Executes this block.",
+            types: ["action"],
         },
         {
-            "id": "year",
-            "name": "Year",
-            "description": "Acceptable Types: Number, Unspecified\n\nDescription: The year to add or remove according to the date selected in \"Start Date\". (OPTIONAL)",
-            "types": ["number", "unspecified"]
+            id: "year",
+            name: "Year",
+            description: 'Acceptable Types: Number, Unspecified\n\nDescription: The year to add or remove according to the date selected in "Start Date". (OPTIONAL)',
+            types: ["number", "unspecified"],
         },
         {
-            "id": "month",
-            "name": "Month",
-            "description": "Acceptable Types: Number, Unspecified\n\nDescription: The month to add or remove according to the date selected in \"Start Date\". (OPTIONAL)",
-            "types": ["number", "unspecified"]
+            id: "month",
+            name: "Month",
+            description: 'Acceptable Types: Number, Unspecified\n\nDescription: The month to add or remove according to the date selected in "Start Date". (OPTIONAL)',
+            types: ["number", "unspecified"],
         },
         {
-            "id": "day",
-            "name": "Day",
-            "description": "Acceptable Types: Number, Unspecified\n\nDescription: The day to add or remove according to the date selected in \"Start Date\". (OPTIONAL)",
-            "types": ["number", "unspecified"]
+            id: "day",
+            name: "Day",
+            description: 'Acceptable Types: Number, Unspecified\n\nDescription: The day to add or remove according to the date selected in "Start Date". (OPTIONAL)',
+            types: ["number", "unspecified"],
         },
         {
-            "id": "hours",
-            "name": "Hours",
-            "description": "Acceptable Types: Number, Unspecified\n\nDescription: The hours to add or remove according to the date selected in \"Start Date\". (OPTIONAL)",
-            "types": ["number", "unspecified"]
+            id: "hours",
+            name: "Hours",
+            description: 'Acceptable Types: Number, Unspecified\n\nDescription: The hours to add or remove according to the date selected in "Start Date". (OPTIONAL)',
+            types: ["number", "unspecified"],
         },
         {
-            "id": "minutes",
-            "name": "Minutes",
-            "description": "Acceptable Types: Number, Unspecified\n\nDescription: The minutes to add or remove according to the date selected in \"Start Date\". (OPTIONAL)",
-            "types": ["number", "unspecified"]
+            id: "minutes",
+            name: "Minutes",
+            description: 'Acceptable Types: Number, Unspecified\n\nDescription: The minutes to add or remove according to the date selected in "Start Date". (OPTIONAL)',
+            types: ["number", "unspecified"],
         },
         {
-            "id": "seconds",
-            "name": "Seconds",
-            "description": "Acceptable Types: Number, Unspecified\n\nDescription: The seconds to add or remove according to the date selected in \"Start Date\". (OPTIONAL)",
-            "types": ["number", "unspecified"]
+            id: "seconds",
+            name: "Seconds",
+            description: 'Acceptable Types: Number, Unspecified\n\nDescription: The seconds to add or remove according to the date selected in "Start Date". (OPTIONAL)',
+            types: ["number", "unspecified"],
         },
         {
-            "id": "milliseconds",
-            "name": "Milliseconds",
-            "description": "Acceptable Types: Number, Unspecified\n\nDescription: The milliseconds to add or remove according to the date selected in \"Start Date\". (OPTIONAL)",
-            "types": ["number", "unspecified"]
+            id: "milliseconds",
+            name: "Milliseconds",
+            description: 'Acceptable Types: Number, Unspecified\n\nDescription: The milliseconds to add or remove according to the date selected in "Start Date". (OPTIONAL)',
+            types: ["number", "unspecified"],
         },
         {
-            "id": "custom_date",
-            "name": "Custom Date",
-            "description": "Acceptable Types: Date, Unspecified\n\nDescription: The custom date if you selected the option \"Custom Date\" in \"Start Date\".",
-            "types": ["date", "unspecified"]
-        }
+            id: "custom_date",
+            name: "Custom Date",
+            description: 'Acceptable Types: Date, Unspecified\n\nDescription: The custom date if you selected the option "Custom Date" in "Start Date".',
+            types: ["date", "unspecified"],
+        },
     ],
     options: [
         {
-            "id": "start_date",
-            "name": "Start Date",
-            "description": "Description: The start date. If you want, you can use the inputs above (Year, Month, Day, Minutes, Seconds, Milliseconds) to add or remove time.",
-            "type": "SELECT",
-            "options": {
-                "current": "Current Time",
-                "beginning": "Beginning of Time",
-                "custom": "Custom Date",
-            }
-        }
+            id: "start_date",
+            name: "Start Date",
+            description: "Description: The start date. If you want, you can use the inputs above (Year, Month, Day, Minutes, Seconds, Milliseconds) to add or remove time.",
+            type: "SELECT",
+            options: {
+                current: "Current Time",
+                beginning: "Beginning of Time",
+                custom: "Custom Date",
+            },
+        },
     ],
     outputs: [
         {
-            "id": "action",
-            "name": "Action",
-            "description": "Type: Action\n\nDescription: Executes the following blocks when this block finishes its task.",
-            "types": ["action"]
+            id: "action",
+            name: "Action",
+            description: "Type: Action\n\nDescription: Executes the following blocks when this block finishes its task.",
+            types: ["action"],
         },
         {
-            "id": "date",
-            "name": "Date",
-            "description": "Type: Date\n\nDescription: This date created.",
-            "types": ["date"]
-        }
+            id: "date",
+            name: "Date",
+            description: "Type: Date\n\nDescription: This date created.",
+            types: ["date"],
+        },
     ],
     code(cache) {
         const year = parseInt(this.GetInputValue("year", cache)) || 0;
@@ -128,7 +128,7 @@ const block = {
             // NOTE: Even though we use 0-based month indexing, the month is only
             //       used for adding/subtracting here and not to index, so we
             //       don't need to subtract 1
-            newDate = addMonths(newDate, (month || 0));
+            newDate = addMonths(newDate, month || 0);
             newDate.setDate(newDate.getDate() + day);
             newDate.setHours(newDate.getHours() + hours);
             newDate.setMinutes(newDate.getMinutes() + minutes);
@@ -152,6 +152,6 @@ const block = {
         }
         this.StoreOutputValue(date, "date", cache);
         this.RunNextBlock("action", cache);
-    }
+    },
 };
 module.exports = block;
